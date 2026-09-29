@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <title>CAP | Personal Training</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f1d56b;
+      --border: rgba(255,255,255,.09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #f8fafc;
+      background:
+        radial-gradient(circle at 5% 0%, rgba(212,175,55,.1), transparent 30%),
+        #070707;
+      font-family: "Cairo", Arial, sans-serif;
+    }
+
+    body.modal-open { overflow: hidden; }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    img { max-width: 100%; }
+    [hidden] { display: none !important; }
+
+    .container {
+      width: min(1450px, 94%);
+      margin-inline: auto;
+    }
+
+    /* تسجيل الدخول */
+    .login-screen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background:
+        linear-gradient(rgba(0,0,0,.78), rgba(0,0,0,.91)),
+        url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=2000&q=85")
+        center / cover,
+        #080808;
+    }
+
+    .login-card {
+      width: min(100%, 430px);
+      padding: 35px;
+      border: 1px solid rgba(212,175,55,.38);
+      border-radius: 24px;
+      background: rgba(15,15,15,.96);
+      box-shadow: 0 30px 90px #000a;
+      text-align: center;
+    }
+
+    .login-icon {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      color: #090909;
+      border-radius: 19px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      font-size: 28px;
+    }
+
+    .login-brand {
+      margin: 0;
+      font: 900 clamp(23px, 6vw, 32px) "Inter", sans-serif;
+    }
+
+    .login-brand span { color: var(--gold); }
+
+    .login-subtitle {
+      margin: 14px 0 28px;
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .login-card label {
+      display: block;
+      margin-bottom: 8px;
+      text-align: right;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .login-input-wrap { position: relative; }
+
+    .login-input-wrap > i {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      color: var(--gold);
+    }
+
+    .login-input-wrap input {
+      width: 100%;
+      padding: 14px 43px 14px 50px;
+      color: #fff;
+      border: 1px solid #3b3b3b;
+      border-radius: 12px;
+      outline: none;
+      background: #090909;
+      direction: ltr;
+      text-align: left;
+      font-family: "Inter", sans-serif;
+    }
+
+    .toggle-code {
+      position: absolute;
+      top: 50%;
+      left: 8px;
+      width: 36px;
+      height: 36px;
+      color: #aaa;
+      border: 0;
+      background: none;
+      transform: translateY(-50%);
+    }
+
+    .login-submit,
+    .export-btn,
+    .save-action {
+      width: 100%;
+      padding: 13px;
+      color: #080808;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ae8b1f, var(--gold), var(--gold-light));
+      font-weight: 900;
+      text-align: center;
+      text-decoration: none;
+      transition: transform .2s, filter .2s;
+    }
+
+    .login-submit { margin-top: 19px; }
+
+    .login-submit:hover,
+    .export-btn:hover,
+    .save-action:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+
+    .login-error {
+      min-height: 22px;
+      margin: 10px 0 0;
+      color: #fca5a5;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* الهيدر */
+    .hero {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      place-items: center;
+      min-height: 590px;
+      overflow: hidden;
+      background: #111;
+      text-align: center;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.52) 45%, rgba(0,0,0,.88));
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      z-index: -1;
+      width: 100%;
+      height: 125px;
+      background: linear-gradient(transparent, #070707);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      width: min(1050px, 94%);
+      padding: 85px 18px 115px;
+    }
+
+    .coach-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 17px;
+      color: var(--gold-light);
+      border: 1px solid rgba(212,175,55,.48);
+      border-radius: 999px;
+      background: rgba(0,0,0,.55);
+      font: 900 11px "Inter", sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .hero-brand {
+      margin: 25px 0 0;
+      font: 900 clamp(37px, 7vw, 88px)/1.1 "Inter", sans-serif;
+      letter-spacing: -4px;
+      overflow-wrap: anywhere;
+      text-shadow: 0 8px 30px #000;
+    }
+
+    .hero-brand .gold { color: var(--gold); }
+
+    .coach-session {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .coach-name,
+    .logout-btn {
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.65);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .coach-name {
+      color: var(--gold-light);
+      border: 1px solid rgba(212,175,55,.5);
+    }
+
+    .logout-btn {
+      color: #fff;
+      border: 1px solid #777;
+    }
+
+    .logout-btn:hover {
+      color: #080808;
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+
+    /* الأقسام */
+    .category-panel {
+      position: relative;
+      z-index: 2;
+      margin-top: -47px;
+      padding: 21px;
+      border: 1px solid rgba(212,175,55,.18);
+      border-radius: 23px;
+      background: linear-gradient(145deg, rgba(26,26,26,.98), rgba(9,9,9,.98));
+      box-shadow: 0 22px 70px #0008;
+    }
+
+    .category-heading,
+    .panel-header,
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .category-heading { margin-bottom: 16px; }
+
+    .heading-icon {
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--gold);
+      border: 1px solid rgba(212,175,55,.2);
+      border-radius: 12px;
+      background: rgba(212,175,55,.08);
+    }
+
+    .category-heading h2,
+    .panel-header h2,
+    .section-title h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .category-heading p,
+    .panel-subtitle {
+      margin: 0;
+      color: #92929b;
+      font-size: 11px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .category-btn {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 8px;
+      min-height: 85px;
+      padding: 10px 5px;
+      color: #ddd;
+      border: 1px solid #333;
+      border-radius: 13px;
+      background: #171717;
+      font-size: 11px;
+      font-weight: 900;
+      transition: .2s;
+    }
+
+    .category-btn i { color: var(--gold); font-size: 19px; }
+
+    .category-btn:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold);
+      background: rgba(212,175,55,.1);
+    }
+
+    .category-note { margin: 13px 0 0; color: #999; font-size: 10px; }
+
+    /* بيانات البرنامج */
+    .builder {
+      display: grid;
+      grid-template-columns: minmax(310px, .82fr) minmax(420px, 1.18fr);
+      gap: 20px;
+      margin: 45px 0 65px;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(145deg, #151515, #0b0b0b);
+      box-shadow: 0 20px 55px #0005;
+    }
+
+    .panel-header { margin-bottom: 20px; }
+
+    .client-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(212,175,55,.18);
+      border-radius: 16px;
+      background: rgba(212,175,55,.04);
+    }
+
+    .profile-avatar {
+      position: relative;
+      flex: 0 0 94px;
+      width: 94px;
+      height: 94px;
+      padding: 3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), #78600f);
+      cursor: pointer;
+    }
+
+    .avatar-inner {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #171717;
+    }
+
+    .avatar-inner img,
+    .preview-avatar img {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-fallback,
+    .preview-fallback {
+      color: var(--gold-light);
+      font-size: 33px;
+      font-weight: 900;
+    }
+
+    .avatar-camera {
+      position: absolute;
+      bottom: 1px;
+      left: 1px;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      color: #080808;
+      border: 3px solid #111;
+      border-radius: 50%;
+      background: var(--gold);
+      font-size: 11px;
+      pointer-events: none;
+    }
+
+    .profile-info { min-width: 0; }
+    .profile-title { font-size: 14px; font-weight: 900; }
+    .profile-description { color: #999; font-size: 10px; line-height: 1.7; }
+
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .profile-action {
+      padding: 6px 9px;
+      color: #ddd;
+      border: 1px solid #3b3b3b;
+      border-radius: 8px;
+      background: #171717;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .profile-action:hover { border-color: var(--gold); }
+    .profile-action.delete:hover { border-color: #ef4444; }
+    #clientPhotoInput { display: none; }
+
+    .field { margin-bottom: 15px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: #aaa;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .field label i { width: 17px; color: var(--gold); }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 11px 12px;
+      color: white;
+      border: 1px solid #303030;
+      border-radius: 10px;
+      outline: none;
+      background: #0b0b0b;
+      font-size: 12px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin: 19px 0 16px;
+    }
+
+    .stat {
+      padding: 13px 7px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #101010;
+      text-align: center;
+    }
+
+    .stat strong,
+    .stat span { display: block; }
+
+    .stat strong {
+      color: var(--gold);
+      font: 900 24px "Inter", sans-serif;
+    }
+
+    .stat span { color: #aaa; font-size: 10px; }
+
+    /* الأزرار تظهر فوراً مع بعضها البعض */
+    .save-options {
+      display: grid;
+      gap: 9px;
+      margin-top: 11px;
+    }
+
+    .save-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .save-action.secondary {
+      color: var(--gold-light);
+      border: 1px solid rgba(212,175,55,.42);
+      background: rgba(212,175,55,.08);
+    }
+
+    .save-hint {
+      margin: 3px 0 0;
+      color: #aaa;
+      font-size: 10px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    /* التمارين المختارة */
+    .selected-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      max-height: 560px;
+      overflow-y: auto;
+    }
+
+    .selected-item {
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid #292929;
+      border-radius: 13px;
+      background: #0d0d0d;
+    }
+
+    .selected-item img,
+    .selected-placeholder {
+      width: 70px;
+      height: 70px;
+      border-radius: 9px;
+      object-fit: cover;
+      background: #191919;
+    }
+
+    .selected-placeholder,
+    .preview-placeholder,
+    .picker-placeholder {
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+    }
+
+    .selected-info { min-width: 0; }
+
+    .selected-name {
+      overflow: hidden;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .selected-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .mini-input {
+      width: 67px;
+      padding: 6px;
+      color: white;
+      border: 1px solid #3a3a3a;
+      border-radius: 7px;
+      outline: none;
+      background: #171717;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .remove-btn {
+      width: 36px;
+      height: 36px;
+      color: #f87171;
+      border: 0;
+      border-radius: 9px;
+      background: rgba(239,68,68,.1);
+    }
+
+    .remove-btn:hover { color: white; background: #ef4444; }
+
+    .empty {
+      padding: 40px 20px;
+      color: #999;
+      border: 1px dashed #383838;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .empty i {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-size: 27px;
+    }
+
+    /* المعاينة */
+    .preview-area { margin-bottom: 75px; }
+    .section-title { margin-bottom: 18px; }
+
+    .preview-card {
+      overflow: hidden;
+      padding: 32px;
+      color: #111827;
+      border-radius: 19px;
+      background: #fff;
+      box-shadow: 0 25px 70px #0006;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      padding-bottom: 19px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .preview-avatar {
+      display: grid;
+      place-items: center;
+      flex: 0 0 72px;
+      overflow: hidden;
+      width: 72px;
+      height: 72px;
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      background: #17202e;
+    }
+
+    .preview-fallback { font-size: 26px; }
+    .preview-header-info { min-width: 0; }
+
+    .preview-header h2 {
+      margin: 0;
+      font-size: clamp(20px, 3vw, 30px);
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .preview-header p {
+      margin: 4px 0 0;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .preview-exercise {
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .preview-exercise:last-child { border-bottom: 0; }
+
+    .preview-exercise img,
+    .preview-placeholder {
+      width: 90px;
+      height: 70px;
+      border-radius: 9px;
+      object-fit: cover;
+      background: #e5e7eb;
+    }
+
+    .preview-name { font-size: 14px; font-weight: 900; }
+    .preview-detail { color: #64748b; font-size: 11px; }
+    .preview-value { font-size: 14px; font-weight: 900; white-space: nowrap; }
+
+    /* نافذة اختيار التمارين */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: #000d;
+      backdrop-filter: blur(9px);
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-box {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      width: min(900px, 100%);
+      max-height: 90vh;
+      border: 1px solid #393939;
+      border-radius: 20px;
+      background: #111;
+      box-shadow: 0 35px 100px #000a;
+    }
+
+    .modal-header {
+      padding: 22px 65px 18px 22px;
+      border-bottom: 1px solid #292929;
+      background: #181818;
+    }
+
+    .modal-header h2 { margin: 0; font-size: 22px; font-weight: 900; }
+    .modal-close {
+      position: absolute;
+      top: 17px;
+      left: 17px;
+      z-index: 2;
+      width: 39px;
+      height: 39px;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 50%;
+      background: #090909;
+    }
+
+    .picker-search { position: relative; margin: 16px 20px 0; }
+    .picker-search i { position: absolute; right: 15px; top: 50%; color: var(--gold); transform: translateY(-50%); pointer-events: none; }
+    .picker-search input { width: 100%; padding: 11px 43px 11px 12px; color: white; border: 1px solid #363636; border-radius: 11px; outline: none; background: #080808; font-size: 12px; }
+
+    .picker-count { padding: 8px 21px; color: #999; font-size: 10px; }
+    .picker-list { overflow-y: auto; min-height: 130px; padding: 0 20px 20px; }
+    .picker-item { display: grid; grid-template-columns: 80px minmax(0, 1fr) auto; align-items: center; gap: 13px; padding: 10px; margin-bottom: 9px; border: 1px solid #2e2e2e; border-radius: 13px; background: #191919; }
+    .picker-image, .picker-placeholder { width: 80px; height: 70px; border-radius: 9px; object-fit: cover; background: #0a0a0a; }
+    .picker-info { min-width: 0; }
+    .picker-name { font-size: 13px; font-weight: 900; }
+    .picker-en { overflow: hidden; color: #999; direction: ltr; text-align: right; text-overflow: ellipsis; white-space: nowrap; font: 600 10px "Inter", sans-serif; }
+    .picker-add { min-width: 72px; padding: 9px 12px; color: #080808; border: 1px solid var(--gold); border-radius: 9px; background: var(--gold); font-size: 11px; font-weight: 900; }
+    .load-more { display: block; width: min(240px, 100%); margin: 14px auto 4px; padding: 10px; color: var(--gold-light); border: 1px solid rgba(212,175,55,.4); border-radius: 10px; background: rgba(212,175,55,.08); font-size: 11px; font-weight: 900; }
+
+    /* نافذة عرض الصورة للضغط المطول على الآيفون */
+    .image-viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      overflow-y: auto;
+      padding: 65px 12px 35px;
+      background: #070707;
+      text-align: center;
+    }
+
+    .image-viewer img {
+      display: block;
+      width: min(100%, 900px);
+      height: auto;
+      margin: 0 auto;
+      -webkit-touch-callout: default;
+      user-select: auto;
+    }
+
+    .image-viewer p { color: #ddd; font-size: 12px; margin-bottom: 15px; }
+
+    .viewer-close {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 301;
+      padding: 8px 14px;
+      color: #080808;
+      border: 0;
+      border-radius: 9px;
+      background: var(--gold);
+      font-weight: 900;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 22px;
+      z-index: 400;
+      padding: 12px 17px;
+      color: white;
+      border: 1px solid rgba(212,175,55,.35);
+      border-radius: 11px;
+      background: #191919;
+      box-shadow: 0 15px 45px #0009;
+      opacity: 0;
+      transform: translateY(90px);
+      transition: .25s;
+      font-size: 12px;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* لوحة التصدير المخفية */
+    .export-sheet {
+      width: 900px;
+      overflow: hidden;
+      color: white;
+      background: #080808;
+      direction: rtl;
+      font-family: "Cairo", Arial, sans-serif;
+    }
+
+    .export-cover {
+      padding: 45px 48px 35px;
+      border-bottom: 4px solid var(--gold);
+      background: radial-gradient(circle at 5% 0%, rgba(212,175,55,.16), transparent 38%), #111;
+    }
+
+    .export-small { color: var(--gold); font: 900 12px "Inter", sans-serif; letter-spacing: 2px; }
+    .export-logo { margin-top: 16px; font: 900 48px "Inter", sans-serif; letter-spacing: -2px; }
+    .export-logo span { color: var(--gold); }
+    .export-divider { width: 80px; height: 3px; margin: 22px 0; background: var(--gold); }
+    .export-workout { font-size: 31px; font-weight: 900; overflow-wrap: anywhere; }
+
+    .export-profile { display: flex; align-items: center; gap: 17px; margin-top: 20px; }
+    .export-profile img, .export-profile-fallback { flex: 0 0 85px; width: 85px; height: 85px; border: 3px solid var(--gold); border-radius: 50%; background: #171717; }
+    .export-profile img { object-fit: cover; }
+    .export-profile-fallback { display: grid; place-items: center; color: var(--gold); font-size: 31px; font-weight: 900; }
+    .export-client { font-size: 18px; font-weight: 900; overflow-wrap: anywhere; }
+
+    .export-body { padding: 28px 37px; }
+    .export-stats { margin: 0 0 24px; gap: 12px; }
+    .export-stat { padding: 13px; border: 1px solid #333; border-radius: 13px; background: #141414; text-align: center; }
+    .export-stat strong { display: block; color: var(--gold); font: 900 25px "Inter", sans-serif; }
+    .export-stat span { color: #aaa; font-size: 10px; }
+
+    .export-exercise { display: grid; grid-template-columns: 45px 145px minmax(0, 1fr) 115px; align-items: center; gap: 15px; padding: 13px; margin-bottom: 11px; border: 1px solid #333; border-radius: 14px; background: #141414; }
+    .export-number { display: grid; place-items: center; width: 43px; height: 43px; color: #080808; border-radius: 10px; background: var(--gold); font: 900 18px "Inter", sans-serif; }
+    .export-image { width: 145px; height: 100px; border-radius: 10px; background: #080808; object-fit: cover; }
+    .export-exercise-name { font-size: 18px; font-weight: 900; }
+    .export-exercise-en { color: #999; direction: ltr; text-align: right; font: 600 10px "Inter", sans-serif; }
+    .export-value { padding: 11px 7px; color: var(--gold-light); border: 1px solid rgba(212,175,55,.4); border-radius: 10px; background: rgba(212,175,55,.08); text-align: center; font-size: 15px; font-weight: 900; }
+
+    @media (max-width: 900px) { .builder { grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body>
+
+  <!-- تسجيل الدخول -->
+  <section id="loginScreen" class="login-screen">
+    <main class="login-card">
+      <div class="login-icon"><i class="fa-solid fa-dumbbell"></i></div>
+      <h1 class="login-brand" dir="ltr">CAP <span>/ PERSONAL TRAINING</span></h1>
+      <p class="login-subtitle">أدخل رمز المدرب لفتح النظام</p>
+
+      <form id="loginForm">
+        <div class="login-input-wrap">
+          <i class="fa-solid fa-lock"></i>
+          <input id="accessCode" type="password" required placeholder="رمز الدخول">
+          <button id="toggleCode" class="toggle-code" type="button"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <button class="login-submit" type="submit">دخول الموقع</button>
+        <p id="loginError" class="login-error"></p>
+      </form>
+    </main>
+  </section>
+
+  <!-- التطبيق -->
+  <div id="app" hidden>
+    <header class="hero">
+      <img class="hero-image" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=2000&q=85" alt="">
+      <div class="hero-content">
+        <div class="coach-badge"><i class="fa-solid fa-crown"></i> PERSONAL TRAINING SYSTEM</div>
+        <h1 class="hero-brand" dir="ltr">CAP <span class="gold">/ <span id="heroCoachName"></span></span></h1>
+        <div class="coach-session">
+          <span class="coach-name"><i class="fa-solid fa-user-tie"></i> كابتن <span id="loggedCoachName"></span></span>
+          <button id="logoutButton" class="logout-btn" type="button">تسجيل خروج</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="category-panel">
+        <div class="category-heading">
+          <div class="heading-icon"><i class="fa-solid fa-dumbbell"></i></div>
+          <div>
+            <h2>أضف تمارين لبرنامجك</h2>
+            <p>اختر القسم، ثم أضف التمارين.</p>
+          </div>
+        </div>
+
+        <div class="category-grid">
+          <button class="category-btn" type="button" data-category="chest"><i class="fa-solid fa-heart-pulse"></i><span>الصدر</span></button>
+          <button class="category-btn" type="button" data-category="back"><i class="fa-solid fa-dumbbell"></i><span>الظهر</span></button>
+          <button class="category-btn" type="button" data-category="legs"><i class="fa-solid fa-person-walking"></i><span>الرجل</span></button>
+          <button class="category-btn" type="button" data-category="shoulders"><i class="fa-solid fa-shield-halved"></i><span>الكتف</span></button>
+          <button class="category-btn" type="button" data-category="biceps"><i class="fa-solid fa-hand-fist"></i><span>بايسبس</span></button>
+          <button class="category-btn" type="button" data-category="triceps"><i class="fa-solid fa-bolt"></i><span>ترايسبس</span></button>
+          <button class="category-btn" type="button" data-category="abs"><i class="fa-solid fa-fire"></i><span>بطن</span></button>
+          <button class="category-btn" type="button" data-category="cardio"><i class="fa-solid fa-person-running"></i><span>كارديو</span></button>
+          <button class="category-btn" type="button" data-category="warmup"><i class="fa-solid fa-stopwatch"></i><span>تسخين</span></button>
+        </div>
+        <p id="databaseStatus" class="category-note">جاري تجهيز التمارين...</p>
+      </section>
+
+      <section class="builder">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="heading-icon"><i class="fa-solid fa-user-gear"></i></div>
+            <div>
+              <h2>بيانات البرنامج</h2>
+              <div class="panel-subtitle">PROGRAM INFO</div>
+            </div>
+          </div>
+
+          <div class="client-profile">
+            <div id="profileAvatar" class="profile-avatar">
+              <div class="avatar-inner">
+                <img id="clientPhotoPreview" alt="">
+                <div id="clientPhotoFallback" class="avatar-fallback">ع</div>
+              </div>
+              <div class="avatar-camera"><i class="fa-solid fa-camera"></i></div>
+            </div>
+            <div class="profile-info">
+              <div class="profile-title">صورة العميل</div>
+              <div class="profile-actions">
+                <button id="choosePhoto" class="profile-action" type="button">اختيار صورة</button>
+                <button id="removePhoto" class="profile-action delete" type="button">حذف</button>
+              </div>
+            </div>
+            <input id="clientPhotoInput" type="file" accept="image/*">
+          </div>
+
+          <div class="field">
+            <label><i class="fa-solid fa-user"></i> اسم العميل</label>
+            <input id="clientName" placeholder="أحمد محمد">
+          </div>
+
+          <div class="field">
+            <label><i class="fa-solid fa-file-signature"></i> اسم البرنامج</label>
+            <input id="workoutName" placeholder="Push Day">
+          </div>
+
+          <div class="field">
+            <label><i class="fa-solid fa-ranking-star"></i> مستوى اللاعب</label>
+            <select id="levelSelect">
+              <option value="beginner">مبتدئ</option>
+              <option value="intermediate">متوسط</option>
+              <option value="expert">متقدم</option>
+            </select>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat"><strong id="selectedCount">0</strong><span>تمرين</span></div>
+            <div class="stat"><strong id="strengthCount">0</strong><span>مقاومة</span></div>
+            <div class="stat"><strong id="cardioCount">0</strong><span>كارديو</span></div>
+          </div>
+
+          <!-- الأزرار تظهر فوراً مع بعضها البعض بدون الحاجة للضغط على زر تصدير منفصل -->
+          <div id="saveOptions" class="save-options">
+            <button id="exportButton" class="export-btn" type="button">
+              <i class="fa-solid fa-file-image"></i> تصدير البرنامج PNG
+            </button>
+
+            <button id="sharePng" class="save-action" type="button" hidden>
+              <i class="fa-solid fa-share-nodes"></i> مشاركة / حفظ الصورة على iPhone
+            </button>
+
+            <a id="downloadPng" class="save-action" href="#">
+              <i class="fa-solid fa-download"></i> تحميل صورة البرنامج
+            </a>
+
+            <button id="openPng" class="save-action secondary" type="button">
+              <i class="fa-solid fa-image"></i> فتح الصورة للحفظ بالضغط المطوّل
+            </button>
+
+            <p class="save-hint">
+              على iPhone: جرّب «مشاركة / حفظ الصورة»، أو افتح الصورة واضغط عليها ضغطة مطوّلة.
+            </p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="heading-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div>
+              <h2>التمارين المختارة</h2>
+              <div class="panel-subtitle">SELECTED EXERCISES</div>
+            </div>
+          </div>
+          <div id="selectedList" class="selected-list">
+            <div class="empty"><i class="fa-solid fa-dumbbell"></i> لم تضف أي تمرين بعد</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-area">
+        <div class="section-title">
+          <div class="heading-icon"><i class="fa-solid fa-eye"></i></div>
+          <h2>معاينة البرنامج <small>LIVE PREVIEW</small></h2>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-header">
+            <div class="preview-avatar">
+              <img id="previewClientPhoto" alt="">
+              <div id="previewPhotoFallback" class="preview-fallback">ع</div>
+            </div>
+            <div class="preview-header-info">
+              <h2 id="previewWorkoutName">برنامج تدريبي</h2>
+              <p id="previewClientName">برنامج تدريبي احترافي</p>
+            </div>
+          </div>
+          <div id="previewExercises">
+            <div style="text-align:center;color:#64748b;padding:30px">أضف تمارين لعرض البرنامج هنا</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="exercisePicker" class="modal">
+    <div class="modal-box">
+      <button id="pickerClose" class="modal-close" type="button"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header"><h2 id="pickerTitle">اختر التمارين</h2></div>
+      <div class="picker-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="pickerSearch" type="search" placeholder="ابحث باسم التمرين...">
+      </div>
+      <div id="pickerCount" class="picker-count"></div>
+      <div id="pickerList" class="picker-list"></div>
+    </div>
+  </div>
+
+  <div id="imageViewer" class="image-viewer" hidden>
+    <button id="closeViewer" class="viewer-close" type="button"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+    <p>اضغط على الصورة ضغطة مطوّلة واختر «حفظ الصورة».</p>
+    <img id="viewerImage" alt="">
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const DEMO_COACHES = [
+      { code: "COACH2027$", name: "ENGY ASHRAF" },
+      { code: "COACH20277$", name: "ABDO OSMAN" }
+    ];
+    const SESSION_KEY = "capDemoCoach";
+    const DATABASE_URL = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/dist/exercises.json";
+    const IMAGE_BASE = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/";
+
+    const CATEGORY_NAMES = { chest: "الصدر", back: "الظهر", legs: "الرجل", shoulders: "الكتف", biceps: "البايسبس", triceps: "الترايسبس", abs: "البطن", cardio: "الكارديو", warmup: "التسخين" };
+    const EQUIPMENT_NAMES = { dumbbell: "دامبل", barbell: "بار", machine: "جهاز", cable: "كابل", "body only": "وزن الجسم" };
+    
+    // قاموس شامل للأسماء العربية للتمارين الشهيرة
+    const ARABIC_NAMES = {
+      "Barbell Bench Press": "بنش بار", "Barbell Squat": "سكوات بار", "Deadlift": "ديدليفت",
+      "Barbell Deadlift": "ديدليفت بار", "Pull-Up": "عقلة", "Chin-Up": "عقلة قبضة عكسية",
+      "Push-Up": "ضغط", "Dumbbell Bench Press": "بنش دامبل", "Incline Dumbbell Press": "بنش علوي دامبل",
+      "Incline Barbell Bench Press": "بنش علوي بار", "Dumbbell Fly": "فلاي دامبل", "Cable Crossover": "كروس أوفر",
+      "Barbell Curl": "باي بار", "Dumbbell Curl": "باي دامبل", "Hammer Curl": "هامر كيرل",
+      "Preacher Curl": "بريشر كيرل", "Triceps Pushdown": "تراي كابل", "Skullcrusher": "سكل كراشر",
+      "Military Press": "ميلتري برس", "Dumbbell Shoulder Press": "ضغط كتف دامبل", "Lateral Raise": "رفرفة جانبي",
+      "Front Dumbbell Raise": "رفرفة أمامي", "Barbell Row": "تجديف بار", "Dumbbell Row": "تجديف دامبل",
+      "Seated Cable Rows": "سحب أرضي", "Lat Pulldown": "سحب عالي", "Leg Press": "ليج برس",
+      "Leg Extension": "ليج إكستنشن", "Leg Curl": "ليج كيرل", "Romanian Deadlift": "رومانيان ديدليفت",
+      "Lunges": "لانجز", "Crunch": "كرنش", "Sit-Up": "سيت أب", "Plank": "بلانك", "Russian Twist": "روسيان تويست",
+      "Jump Rope": "نط حبل", "Running": "جري", "Treadmill": "جري على المشاية"
+    };
+
+    const $ = s => document.querySelector(s);
+    let currentCoachName = "";
+    let allExercises = [];
+    let selectedExercises = [];
+    let activeCategory = "";
+    let pickerVisibleCount = 30;
+    let databaseLoading = false;
+    let clientPhotoData = "";
+
+    let exportUrl = "";
+    let exportBlob = null;
+    let exportFileName = "";
+
+    function escapeHTML(v) { return String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function safeName(v) { return String(v || "").trim().replace(/[^a-zA-Z0-9\u0600-\u06FF]+/g, "-") || "workout"; }
+
+    function showApp(name) {
+      currentCoachName = name;
+      $("#heroCoachName").textContent = name;
+      $("#loggedCoachName").textContent = name;
+      $("#loginScreen").hidden = true;
+      $("#app").hidden = false;
+      updatePreview();
+      updateExportImageSilent();
+    }
+
+    function showLogin() {
+      $("#app").hidden = true;
+      $("#loginScreen").hidden = false;
+    }
+
+    $("#loginForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const coach = DEMO_COACHES.find(c => c.code === $("#accessCode").value.trim());
+      if (coach) {
+        sessionStorage.setItem(SESSION_KEY, coach.name);
+        showApp(coach.name);
+      } else {
+        $("#loginError").textContent = "رمز الدخول غير صحيح";
+      }
+    });
+
+    $("#toggleCode").addEventListener("click", () => {
+      const input = $("#accessCode");
+      const visible = input.type === "password";
+      input.type = visible ? "text" : "password";
+      $("#toggleCode i").className = visible ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+    });
+
+    $("#logoutButton").addEventListener("click", () => {
+      sessionStorage.removeItem(SESSION_KEY);
+      showLogin();
+    });
+
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved) showApp(saved);
+
+    function arabicName(ex) {
+      return ARABIC_NAMES[ex.name] || ex.name;
+    }
+
+    function getImage(ex) {
+      const p = ex?.images?.[0];
+      if (!p) return "";
+      return /^https?:\/\//i.test(p) ? p : IMAGE_BASE + p;
+    }
+
+    function detectCategory(ex) {
+      const name = String(ex.name || "").toLowerCase();
+      const type = String(ex.category || "").toLowerCase();
+      const primary = (ex.primaryMuscles || []).join(" ").toLowerCase();
+      const text = `${name} ${primary}`;
+
+      if (type === "cardio" || /treadmill|running|cycling|bike|bicycle|elliptical|stair|jump rope|walking/.test(name)) return "cardio";
+      if (type === "stretching" || /stretch|mobility|warm.?up|arm circle|shoulder roll/.test(name)) return "warmup";
+      if (/abdominals|crunch|sit.?up|plank|russian twist|leg raise/.test(text)) return "abs";
+      if (/chest|bench press|push.?up|fly|crossover/.test(text)) return "chest";
+      if (/lats|middle back|pulldown|pull.?up|row|deadlift/.test(text)) return "back";
+      if (/quadriceps|hamstrings|glutes|calves|squat|leg press|lunge/.test(text)) return "legs";
+      if (/shoulder|traps|military press|lateral raise|deltoid/.test(text)) return "shoulders";
+      if (/triceps|pushdown|skullcrusher/.test(text)) return "triceps";
+      if (/biceps|curl/.test(text)) return "biceps";
+      return "legs";
+    }
+
+    async function loadDatabase() {
+      if (databaseLoading) return;
+      databaseLoading = true;
+      $("#databaseStatus").textContent = "جاري تجهيز التمارين...";
+
+      try {
+        const res = await fetch(DATABASE_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const list = Array.isArray(data) ? data : data.exercises || [];
+
+        allExercises = list
+          .filter(ex => ex?.id && ex?.name && Array.isArray(ex.images) && ex.images.length)
+          .map(ex => ({
+            ...ex,
+            customCategory: detectCategory(ex),
+            additionalCategories: []
+          }));
+
+        $("#databaseStatus").textContent = "التمارين جاهزة — اضغط على أي قسم لاختيار التمارين.";
+        updateExportImageSilent();
+      } catch (err) {
+        console.error("Database error:", err);
+        $("#databaseStatus").textContent = "تعذر تحميل التمارين. تحقق من الاتصال.";
+      } finally {
+        databaseLoading = false;
+      }
+    }
+
+    function openPicker(cat) {
+      activeCategory = cat;
+      pickerVisibleCount = 30;
+      $("#pickerTitle").textContent = `تمارين ${CATEGORY_NAMES[cat] || cat}`;
+      $("#pickerSearch").value = "";
+      $("#exercisePicker").classList.add("show");
+      document.body.classList.add("modal-open");
+      renderPicker();
+      $("#pickerSearch").focus();
+    }
+
+    function closePicker() {
+      $("#exercisePicker").classList.remove("show");
+      document.body.classList.remove("modal-open");
+    }
+
+    function renderPicker() {
+      const container = $("#pickerList");
+      if (!allExercises.length) {
+        container.innerHTML = `<div class="empty"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل التمارين...</div>`;
+        return;
+      }
+
+      const search = $("#pickerSearch").value.trim().toLowerCase();
+      const matches = allExercises
+        .filter(ex => ex.customCategory === activeCategory)
+        .filter(ex => {
+          if (!search) return true;
+          return `${ex.name} ${arabicName(ex)}`.toLowerCase().includes(search);
+        });
+
+      $("#pickerCount").textContent = `${matches.length} تمرين متاح في هذا القسم`;
+
+      if (!matches.length) {
+        container.innerHTML = `<div class="empty"><i class="fa-solid fa-magnifying-glass"></i> لا توجد تمارين مطابقة</div>`;
+        return;
+      }
+
+      container.replaceChildren();
+      matches.slice(0, pickerVisibleCount).forEach(ex => {
+        const added = selectedExercises.some(s => s.id === ex.id);
+        const div = document.createElement("div");
+        div.className = "picker-item";
+        div.innerHTML = `
+          <img class="picker-image" src="${escapeHTML(getImage(ex))}" crossorigin="anonymous" loading="lazy">
+          <div class="picker-info">
+            <div class="picker-name">${escapeHTML(arabicName(ex))}</div>
+            <div class="picker-en">${escapeHTML(ex.name)}</div>
+          </div>
+          <button class="picker-add" type="button" ${added ? "disabled" : ""}>${added ? "تم" : '<i class="fa-solid fa-plus"></i> إضافة'}</button>
+        `;
+        div.querySelector("button").addEventListener("click", () => {
+          selectedExercises.push({ id: ex.id, sets: 3, reps: 12 });
+          renderSelected();
+          updateStats();
+          updatePreview();
+          renderPicker();
+          updateExportImageSilent();
+          showToast("تمت إضافة التمرين 🔥");
+        });
+        container.appendChild(div);
+      });
+    }
+
+    function renderSelected() {
+      const container = $("#selectedList");
+      if (!selectedExercises.length) {
+        container.innerHTML = `<div class="empty"><i class="fa-solid fa-dumbbell"></i> لم تضف أي تمرين بعد<small>اختر قسمًا من الأعلى ثم أضف التمارين.</small></div>`;
+        return;
+      }
+
+      container.replaceChildren();
+      selectedExercises.forEach(item => {
+        const ex = allExercises.find(e => e.id === item.id);
+        if (!ex) return;
+        const div = document.createElement("div");
+        div.className = "selected-item";
+        div.innerHTML = `
+          <img src="${escapeHTML(getImage(ex))}" crossorigin="anonymous">
+          <div class="selected-info">
+            <div class="selected-name">${escapeHTML(arabicName(ex))}</div>
+            <div class="selected-controls">
+              <label>Sets <input class="mini-input" type="number" min="1" value="${item.sets}" onchange="updateItem(${item.id}, 'sets', this.value)"></label>
+              <label>Reps <input class="mini-input" type="number" min="1" value="${item.reps}" onchange="updateItem(${item.id}, 'reps', this.value)"></label>
+            </div>
+          </div>
+          <button class="remove-btn" type="button" onclick="removeItem(${item.id})" aria-label="حذف"><i class="fa-solid fa-trash"></i></button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    window.updateItem = (id, field, val) => {
+      const item = selectedExercises.find(s => s.id === id);
+      if (item) {
+        item[field] = Math.max(1, parseInt(val) || 1);
+        updatePreview();
+        updateExportImageSilent();
+      }
+    };
+
+    window.removeItem = id => {
+      selectedExercises = selectedExercises.filter(s => s.id !== id);
+      renderSelected();
+      updateStats();
+      updatePreview();
+      updateExportImageSilent();
+      if ($("#exercisePicker").classList.contains("show")) renderPicker();
+    };
+
+    function updateStats() {
+      $("#selectedCount").textContent = selectedExercises.length;
+      $("#strengthCount").textContent = selectedExercises.length;
+      $("#cardioCount").textContent = 0;
+    }
+
+    function updateClientPhotoUI() {
+      const img1 = $("#clientPhotoPreview"), img2 = $("#previewClientPhoto");
+      const f1 = $("#clientPhotoFallback"), f2 = $("#previewPhotoFallback");
+      if (clientPhotoData) {
+        img1.src = img2.src = clientPhotoData;
+        img1.style.display = img2.style.display = "block";
+        f1.style.display = f2.style.display = "none";
+      } else {
+        img1.style.display = img2.style.display = "none";
+        f1.style.display = f2.style.display = "flex";
+      }
+    }
+
+    function handleClientPhoto(file) {
+      if (!file || !file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        clientPhotoData = e.target.result;
+        updateClientPhotoUI();
+        updatePreview();
+        updateExportImageSilent();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updatePreview() {
+      $("#previewWorkoutName").textContent = $("#workoutName").value.trim() || `برنامج تدريبي`;
+      $("#previewClientName").textContent = $("#clientName").value.trim() || "برنامج تدريبي احترافي";
+      updateClientPhotoUI();
+
+      const container = $("#previewExercises");
+      if (!selectedExercises.length) {
+        container.innerHTML = `<div style="text-align:center;color:#64748b;padding:30px">أضف تمارين لعرض البرنامج هنا</div>`;
+        return;
+      }
+
+      container.replaceChildren();
+      selectedExercises.forEach((item, index) => {
+        const ex = allExercises.find(e => e.id === item.id);
+        if (!ex) return;
+        const div = document.createElement("div");
+        div.className = "preview-exercise";
+        div.innerHTML = `
+          <img src="${escapeHTML(getImage(ex))}" crossorigin="anonymous">
+          <div>
+            <div class="preview-name">${index + 1}. ${escapeHTML(arabicName(ex))}</div>
+            <div class="preview-detail">${CATEGORY_NAMES[ex.customCategory] || "تمرين"}</div>
+          </div>
+          <div class="preview-value">${item.sets} × ${item.reps}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function showToast(msg) {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2000);
+    }
+
+    function buildExportSheet() {
+      const client = $("#clientName").value.trim() || "عميل";
+      const workout = $("#workoutName").value.trim() || "برنامج تدريبي";
+      const profileHTML = clientPhotoData ? `<img src="${escapeHTML(clientPhotoData)}">` : `<div class="export-profile-fallback">ع</div>`;
+
+      const exercisesHTML = selectedExercises.map((item, index) => {
+        const ex = allExercises.find(e => e.id === item.id);
+        if (!ex) return "";
+        return `
+          <div class="export-exercise">
+            <div class="export-number">${index + 1}</div>
+            <img class="export-image" src="${escapeHTML(getImage(ex))}" crossorigin="anonymous">
+            <div>
+              <div class="export-exercise-name">${escapeHTML(arabicName(ex))}</div>
+              <div class="export-exercise-en">${escapeHTML(ex.name)}</div>
+            </div>
+            <div class="export-value">${item.sets} × ${item.reps}</div>
+          </div>
+        `;
+      }).join("");
+
+      const sheet = document.createElement("div");
+      sheet.className = "export-sheet";
+      sheet.style.position = "absolute"; sheet.style.left = "-9999px"; sheet.style.top = "0";
+      sheet.innerHTML = `
+        <div class="export-cover">
+          <div class="export-small">PERSONAL TRAINING PROGRAM</div>
+          <div class="export-logo" dir="ltr">CAP <span>/ ${escapeHTML(currentCoachName)}</span></div>
+          <div class="export-divider"></div>
+          <div class="export-workout">${escapeHTML(workout)}</div>
+          <div class="export-profile">${profileHTML}<div><div class="export-client">اللاعب: ${escapeHTML(client)}</div></div></div>
+        </div>
+        <div class="export-body"><div class="export-stats"><div class="export-stat"><strong>${selectedExercises.length}</strong><span>التمارين</span></div></div>${exercisesHTML}</div>
+      `;
+      document.body.appendChild(sheet);
+      return sheet;
+    }
+
+    async function imageToDataURL(url) {
+      if (!url || /^data:/i.test(url)) return url;
+      try {
+        const res = await fetch(url, { mode: "cors", credentials: "omit" });
+        const blob = await res.blob();
+        return await new Promise(r => { const rd = new FileReader(); rd.onload = () => r(rd.result); rd.readAsDataURL(blob); });
+      } catch { return ""; }
+    }
+
+    async function prepareImages(sheet) {
+      const imgs = [...sheet.querySelectorAll("img")];
+      await Promise.all(imgs.map(async img => {
+        const src = img.getAttribute("src");
+        if (src) {
+          const data = await imageToDataURL(src);
+          if (data) img.src = data;
+        }
+      }));
+    }
+
+    async function updateExportImageSilent() {
+      if (!selectedExercises.length) return;
+      try {
+        const sheet = buildExportSheet();
+        await prepareImages(sheet);
+        await new Promise(r => setTimeout(r, 200));
+
+        const canvas = await html2canvas(sheet, { scale: 2, useCORS: false, backgroundColor: "#080808" });
+        sheet.remove();
+
+        exportFileName = `CAP-${safeName(currentCoachName)}-${safeName($("#clientName").value)}.png`;
+        exportBlob = await new Promise(res => canvas.toBlob(res, "image/png"));
+        exportUrl = URL.createObjectURL(exportBlob);
+
+        $("#downloadPng").href = exportUrl;
+        $("#downloadPng").download = exportFileName;
+
+        const file = new File([exportBlob], exportFileName, { type: "image/png" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          $("#sharePng").hidden = false;
+        } else {
+          $("#sharePng").hidden = true;
+        }
+      } catch (err) {
+        console.error("Silent export error:", err);
+      }
+    }
+
+    $("#exportButton").addEventListener("click", () => {
+      if (!selectedExercises.length) { showToast("أضف تمارين أولاً"); return; }
+      showToast("الصورة جاهزة للتحميل والمشاركة بنجاح! 🔥");
+    });
+
+    $("#sharePng").addEventListener("click", async () => {
+      if (!exportBlob) return;
+      const file = new File([exportBlob], exportFileName, { type: "image/png" });
+      try { await navigator.share({ files: [file] }); } catch {}
+    });
+
+    $("#openPng").addEventListener("click", async () => {
+      if (!exportUrl) {
+        await updateExportImageSilent();
+      }
+      if (exportUrl) {
+        $("#viewerImage").src = exportUrl;
+        $("#imageViewer").hidden = false;
+        document.body.classList.add("modal-open");
+      } else {
+        showToast("أضف تمارين أولاً لتتمكن من المعاينة");
+      }
+    });
+
+    $("#closeViewer").addEventListener("click", () => {
+      $("#imageViewer").hidden = true;
+      document.body.classList.remove("modal-open");
+    });
+
+    document.querySelectorAll(".category-btn").forEach(btn => {
+      btn.addEventListener("click", () => openPicker(btn.dataset.category));
+    });
+
+    $("#pickerClose").addEventListener("click", closePicker);
+    $("#pickerSearch").addEventListener("input", renderPicker);
+    $("#exercisePicker").addEventListener("click", e => { if (e.target === e.currentTarget) closePicker(); });
+    
+    $("#clientName").addEventListener("input", () => { updatePreview(); updateExportImageSilent(); });
+    $("#workoutName").addEventListener("input", () => { updatePreview(); updateExportImageSilent(); });
+    $("#choosePhoto").addEventListener("click", () => $("#clientPhotoInput").click());
+    $("#profileAvatar").addEventListener("click", () => $("#clientPhotoInput").click());
+    $("#clientPhotoInput").addEventListener("change", e => handleClientPhoto(e.target.files?.[0]));
+    $("#removePhoto").addEventListener("click", () => { clientPhotoData = ""; updateClientPhotoUI(); updatePreview(); updateExportImageSilent(); });
+
+    loadDatabase();
+  </script>
+</body>
+</html>
